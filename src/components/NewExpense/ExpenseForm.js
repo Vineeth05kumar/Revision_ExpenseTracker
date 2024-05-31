@@ -1,10 +1,11 @@
 import "./ExpenseForm.css";
 import { useState } from "react";
 
-export default function ExpenseForm() {
+export default function ExpenseForm(props) {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
+  const [enteredLocation, setEnteredLocation] = useState('');
 
   const titleHandler =(event) => {
     setEnteredTitle(event.target.value);
@@ -17,16 +18,20 @@ export default function ExpenseForm() {
   const dateHandler =(event) => {
     setEnteredDate(event.target.value);
   }
+  const locationHandler = (event)=>{
+    setEnteredLocation(event.target.value);
+  }
   const submitHandler = (event) => {
     event.preventDefault();
 
     const obj = {
-      title:enteredTitle,
+      name:enteredTitle,
       price:enteredAmount,
-      date:enteredDate,
+      date:new Date(enteredDate),
+      location:enteredLocation,
     }
 
-    console.log(obj);
+    props.onSaveData(obj);
   }
   return (
     <form onSubmit={submitHandler}>
@@ -42,6 +47,10 @@ export default function ExpenseForm() {
         <div className="new-expense__control">
           <label>Date</label>
           <input onChange={dateHandler} value={enteredDate} type="date" min="2019-01-01" max="2024-05-31" />
+        </div>
+        <div className="new-expense__control">
+          <label>Location</label>
+          <input onChange={locationHandler} value={enteredLocation}type="text" />
         </div>
         <div className="new-expense__actions">
           <button type="submit" >ADD EXPENSE</button>
